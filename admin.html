@@ -11,42 +11,33 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-seri
 .header { text-align: center; padding: 1.5rem 0 1rem; border-bottom: 1px solid #e5e5e0; margin-bottom: 1.2rem; }
 .header h1 { font-size: 20px; font-weight: 600; }
 .header p { font-size: 12px; color: #888; margin-top: 4px; }
-
-/* 로그인 */
 .login-box { background: #fff; border: 1px solid #e0e0dc; border-radius: 12px; padding: 2rem; max-width: 300px; margin: 3rem auto; text-align: center; }
 .login-box h2 { font-size: 16px; font-weight: 600; margin-bottom: 1.2rem; }
 .login-box input { width: 100%; padding: 10px 12px; border: 1px solid #e0e0dc; border-radius: 8px; font-size: 15px; font-family: inherit; margin-bottom: 10px; text-align: center; letter-spacing: 4px; }
 .login-box input:focus { outline: none; border-color: #3b7dd8; }
 .login-btn { width: 100%; padding: 11px; background: #3b7dd8; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; }
-.login-error { font-size: 12px; color: #e24b4a; margin-top: 8px; }
-
-/* 탭 */
-.tabs { display: flex; gap: 0; border-bottom: 2px solid #e0e0dc; margin-bottom: 1.2rem; }
-.tab { padding: 10px 20px; font-size: 14px; font-weight: 600; color: #aaa; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; }
-.tab.active { color: #3b7dd8; border-bottom-color: #3b7dd8; }
-.tab:hover:not(.active) { color: #666; }
-.tab-content { display: none; }
-.tab-content.active { display: block; }
-
-/* 통계 */
+.login-error { font-size: 12px; color: #e24b4a; margin-top: 8px; display: none; }
+.pw-box { background: #fff; border: 1px solid #e0e0dc; border-radius: 12px; padding: 1.2rem; }
+.pw-field { margin-bottom: 0.8rem; }
+.pw-field label { display: block; font-size: 12px; color: #888; margin-bottom: 4px; }
+.pw-field input { width: 100%; padding: 9px 12px; border: 1px solid #e0e0dc; border-radius: 8px; font-size: 14px; font-family: inherit; }
+.pw-field input:focus { outline: none; border-color: #3b7dd8; }
+.pw-msg { font-size: 12px; margin-top: 8px; padding: 8px 12px; border-radius: 6px; display: none; }
+.pw-msg.success { background: #eaf3de; color: #3b6d11; }
+.pw-msg.error { background: #fcebeb; color: #a32d2d; }
 .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.2rem; }
 .stat-card { background: #fff; border: 1px solid #e0e0dc; border-radius: 10px; padding: 14px; text-align: center; }
 .stat-card .num { font-size: 26px; font-weight: 700; color: #3b7dd8; }
 .stat-card .label { font-size: 11px; color: #888; margin-top: 3px; }
-
-/* 툴바 */
 .toolbar { display: flex; gap: 8px; margin-bottom: 1rem; align-items: center; }
 .toolbar input { padding: 8px 10px; border: 1px solid #e0e0dc; border-radius: 8px; font-size: 13px; font-family: inherit; flex: 1; }
 .toolbar input:focus { outline: none; border-color: #3b7dd8; }
 .btn { padding: 8px 14px; border: 1px solid #e0e0dc; border-radius: 8px; background: #fff; font-size: 13px; cursor: pointer; font-family: inherit; color: #555; white-space: nowrap; }
 .btn:hover { border-color: #aaa; }
-.btn-danger { background: #fcebeb; color: #a32d2d; border-color: #f7c1c1; }
-.btn-danger:hover { background: #f9d5d5; }
-.btn-sm { padding: 4px 10px; font-size: 11px; border-radius: 6px; }
 .btn-primary { background: #3b7dd8; color: #fff; border-color: #3b7dd8; }
 .btn-primary:hover { background: #2f6bbf; }
-
-/* 날짜별 테이블 */
+.btn-danger { background: #fcebeb; color: #a32d2d; border-color: #f7c1c1; }
+.btn-sm { padding: 4px 10px; font-size: 11px; border-radius: 6px; }
 .date-section { margin-bottom: 1.4rem; }
 .date-header { display: flex; align-items: center; gap: 10px; padding: 8px 14px; background: #3b7dd8; border-radius: 8px 8px 0 0; }
 .date-header .date-title { font-size: 14px; font-weight: 700; color: #fff; }
@@ -57,21 +48,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-seri
 .day-table tr:last-child td { border-bottom: none; }
 .day-table tr:hover td { background: #fafaf8; }
 .slot-badge { display: inline-block; font-size: 11px; padding: 3px 8px; border-radius: 10px; font-weight: 600; background: #eef4fd; color: #185fa5; white-space: nowrap; }
-.memo-cell { font-size: 12px; color: #666; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.memo-cell { font-size: 12px; color: #666; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .actions { display: flex; gap: 5px; }
-
-/* 비밀번호 탭 */
-.pw-box { background: #fff; border: 1px solid #e0e0dc; border-radius: 12px; padding: 1.5rem; max-width: 360px; }
-.pw-box h3 { font-size: 15px; font-weight: 600; margin-bottom: 1.2rem; color: #333; }
-.pw-field { margin-bottom: 1rem; }
-.pw-field label { display: block; font-size: 12px; color: #888; margin-bottom: 5px; }
-.pw-field input { width: 100%; padding: 10px 12px; border: 1px solid #e0e0dc; border-radius: 8px; font-size: 14px; font-family: inherit; }
-.pw-field input:focus { outline: none; border-color: #3b7dd8; }
-.pw-msg { font-size: 12px; margin-top: 10px; padding: 8px 12px; border-radius: 6px; display: none; }
-.pw-msg.success { background: #eaf3de; color: #3b6d11; }
-.pw-msg.error { background: #fcebeb; color: #a32d2d; }
-
-/* 모달 */
 .modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; align-items: center; justify-content: center; }
 .modal-bg.open { display: flex; }
 .modal { background: #fff; border-radius: 12px; padding: 1.5rem; width: 90%; max-width: 400px; }
@@ -79,12 +57,10 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-seri
 .modal-field { margin-bottom: 0.9rem; }
 .modal-field label { display: block; font-size: 12px; color: #888; margin-bottom: 5px; }
 .modal-field input, .modal-field select, .modal-field textarea { width: 100%; padding: 9px 12px; border: 1px solid #e0e0dc; border-radius: 8px; font-size: 14px; font-family: inherit; }
-.modal-field input:focus, .modal-field select:focus, .modal-field textarea:focus { outline: none; border-color: #3b7dd8; }
 .modal-field textarea { min-height: 60px; resize: vertical; }
 .modal-actions { display: flex; gap: 8px; margin-top: 1.2rem; }
 .modal-actions button { flex: 1; padding: 11px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; border: 1px solid #e0e0dc; background: #fff; color: #555; }
 .modal-actions .save-btn { background: #3b7dd8; color: #fff; border-color: #3b7dd8; }
-
 .empty { text-align: center; padding: 3rem; color: #bbb; font-size: 14px; }
 .loading { text-align: center; padding: 3rem; color: #bbb; }
 .result-count { font-size: 12px; color: #888; margin-bottom: 8px; }
@@ -97,83 +73,56 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-seri
     <p>잠실고등학교 진로진학부 · 관리자 전용</p>
   </div>
 
-  <!-- 로그인 -->
   <div id="login-view">
     <div class="login-box">
       <h2>🔒 관리자 로그인</h2>
       <input type="password" id="pw-input" placeholder="비밀번호" onkeydown="if(event.key==='Enter')doLogin()" />
       <button class="login-btn" onclick="doLogin()">로그인</button>
-      <div class="login-error" id="login-error" style="display:none;">비밀번호가 틀렸어요.</div>
+      <div class="login-error" id="login-error">비밀번호가 틀렸어요.</div>
     </div>
 
     <div style="max-width:300px; margin: 0.8rem auto 0; text-align:center;">
       <button class="btn" style="font-size:13px; color:#888;" onclick="togglePwBox()">🔑 비밀번호 변경하기</button>
     </div>
-
     <div class="pw-box" id="pw-box" style="max-width:300px; margin: 0.6rem auto 0; display:none;">
-      <div class="pw-field">
-        <label>현재 비밀번호</label>
-        <input type="password" id="pw-current" placeholder="현재 비밀번호 입력" />
-      </div>
-      <div class="pw-field">
-        <label>새 비밀번호</label>
-        <input type="password" id="pw-new" placeholder="새 비밀번호 입력" />
-      </div>
-      <div class="pw-field">
-        <label>새 비밀번호 확인</label>
-        <input type="password" id="pw-confirm" placeholder="새 비밀번호 재입력" onkeydown="if(event.key==='Enter')changePw()" />
-      </div>
-      <button class="btn btn-primary" style="width:100%; padding:11px; font-size:14px;" onclick="changePw()">저장</button>
+      <div class="pw-field"><label>현재 비밀번호</label><input type="password" id="pw-current" placeholder="현재 비밀번호" /></div>
+      <div class="pw-field"><label>새 비밀번호</label><input type="password" id="pw-new" placeholder="새 비밀번호" /></div>
+      <div class="pw-field"><label>새 비밀번호 확인</label><input type="password" id="pw-confirm" placeholder="재입력" onkeydown="if(event.key==='Enter')changePw()" /></div>
+      <button class="btn btn-primary" style="width:100%; padding:11px;" onclick="changePw()">저장</button>
       <div class="pw-msg" id="pw-msg"></div>
     </div>
 
     <div style="max-width:300px; margin: 0.8rem auto 0; text-align:center;">
       <button class="btn" style="font-size:13px; color:#888;" onclick="toggleStudentPwBox()">👨‍🎓 학생 비밀번호 변경하기</button>
     </div>
-
     <div class="pw-box" id="student-pw-box" style="max-width:300px; margin: 0.6rem auto 0; display:none;">
-      <div class="pw-field">
-        <label>새 학생 비밀번호</label>
-        <input type="text" id="student-pw-new" placeholder="학생에게 알려줄 비밀번호" />
-      </div>
-      <div class="pw-field">
-        <label>확인</label>
-        <input type="text" id="student-pw-confirm" placeholder="비밀번호 재입력" onkeydown="if(event.key==='Enter')changeStudentPw()" />
-      </div>
-      <button class="btn btn-primary" style="width:100%; padding:11px; font-size:14px;" onclick="changeStudentPw()">저장</button>
+      <div class="pw-field"><label>새 학생 비밀번호</label><input type="text" id="student-pw-new" placeholder="학생에게 알려줄 비밀번호" /></div>
+      <div class="pw-field"><label>확인</label><input type="text" id="student-pw-confirm" placeholder="재입력" onkeydown="if(event.key==='Enter')changeStudentPw()" /></div>
+      <button class="btn btn-primary" style="width:100%; padding:11px;" onclick="changeStudentPw()">저장</button>
       <div class="pw-msg" id="student-pw-msg"></div>
     </div>
   </div>
 
-  <!-- 대시보드 -->
   <div id="admin-view" style="display:none;">
-    <!-- 신청 목록 -->
-    <div id="tab-bookings">
-      <div class="stats">
-        <div class="stat-card"><div class="num" id="stat-total">-</div><div class="label">전체 신청</div></div>
-        <div class="stat-card"><div class="num" id="stat-upcoming">-</div><div class="label">예정 상담</div></div>
-        <div class="stat-card"><div class="num" id="stat-today">-</div><div class="label">오늘 신청</div></div>
-      </div>
-      <div class="toolbar">
-        <input type="text" id="filter-name" placeholder="🔍 이름으로 검색" oninput="renderAll()" />
-        <button class="btn" onclick="loadAll()">↻ 새로고침</button>
-      </div>
-      <div class="result-count" id="result-count"></div>
-      <div id="content"><div class="loading">불러오는 중...</div></div>
+    <div class="stats">
+      <div class="stat-card"><div class="num" id="stat-total">-</div><div class="label">전체 신청</div></div>
+      <div class="stat-card"><div class="num" id="stat-upcoming">-</div><div class="label">예정 상담</div></div>
+      <div class="stat-card"><div class="num" id="stat-today">-</div><div class="label">오늘 신청</div></div>
     </div>
-
+    <div class="toolbar">
+      <input type="text" id="filter-name" placeholder="🔍 이름으로 검색" oninput="renderAll()" />
+      <button class="btn" onclick="loadAll()">↻ 새로고침</button>
+    </div>
+    <div class="result-count" id="result-count"></div>
+    <div id="content"><div class="loading">불러오는 중...</div></div>
   </div>
 </div>
 
-<!-- 수정 모달 -->
 <div class="modal-bg" id="edit-modal">
   <div class="modal">
     <h3>✏️ 상담 일정 수정</h3>
-    <input type="hidden" id="edit-key" />
-    <div class="modal-field">
-      <label>날짜</label>
-      <input type="date" id="edit-date" min="2026-07-01" max="2026-07-21" />
-    </div>
+    <input type="hidden" id="edit-id" />
+    <div class="modal-field"><label>날짜</label><input type="date" id="edit-date" min="2026-07-01" max="2026-07-21" /></div>
     <div class="modal-field">
       <label>교시</label>
       <select id="edit-slot">
@@ -185,22 +134,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-seri
         <option value="5">5교시 (13:00)</option>
       </select>
     </div>
-    <div class="modal-field">
-      <label>이름</label>
-      <input type="text" id="edit-name" />
-    </div>
-    <div class="modal-field">
-      <label>학년·반·번호</label>
-      <input type="text" id="edit-cls" />
-    </div>
-    <div class="modal-field">
-      <label>연락처</label>
-      <input type="text" id="edit-phone" />
-    </div>
-    <div class="modal-field">
-      <label>상담 받고 싶은 내용</label>
-      <textarea id="edit-content"></textarea>
-    </div>
+    <div class="modal-field"><label>이름</label><input type="text" id="edit-name" /></div>
+    <div class="modal-field"><label>학번</label><input type="text" id="edit-cls" /></div>
+    <div class="modal-field"><label>상담 받고 싶은 내용</label><textarea id="edit-content"></textarea></div>
     <div class="modal-actions">
       <button onclick="closeModal()">취소</button>
       <button class="save-btn" onclick="saveEdit()">저장</button>
@@ -208,33 +144,41 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-seri
   </div>
 </div>
 
-<script>
-const STORAGE_PW_KEY = 'admin:password';
-const DEFAULT_PW = '1234';
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, doc, setDoc, getDoc, getDocs, collection, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
+const firebaseConfig = {
+  apiKey: "AIzaSyDs7f6060iELukTWtbRFGfkFuGwx-brSlQ",
+  authDomain: "jamsil-counsel-2026.firebaseapp.com",
+  projectId: "jamsil-counsel-2026",
+  storageBucket: "jamsil-counsel-2026.firebasestorage.app",
+  messagingSenderId: "305921970622",
+  appId: "1:305921970622:web:93b25845c78b696abe69ef"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const DEFAULT_ADMIN_PW = '1234';
 const TIME_LABELS = {
-  '1':'1교시 (08:20)', '2':'2교시 (09:20)', '3':'3교시 (10:20)',
-  '4':'4교시 (11:20)', '점심':'점심시간', '5':'5교시 (13:00)',
-  '6':'6교시 (14:00)', '7':'7교시 (15:00)'
+  '1':'1교시 (08:20)','2':'2교시 (09:20)','3':'3교시 (10:20)',
+  '4':'4교시 (11:20)','점심':'점심시간','5':'5교시 (13:00)',
 };
 const DAY_NAMES = ['일','월','화','수','목','금','토'];
+let allBookings = [], editingId = null;
 
-let allBookings = [];
-let editingOrigKey = null;
-let currentPw = DEFAULT_PW;
-
-// 저장된 비밀번호 불러오기
-async function loadPw(){
-  try{
-    const val = await window.storage.get(STORAGE_PW_KEY, false);
-    if(val) currentPw = val.value;
-  }catch(e){ currentPw = DEFAULT_PW; }
+async function getAdminPw() {
+  try {
+    const snap = await getDoc(doc(db, 'settings', 'adminPw'));
+    return snap.exists() ? snap.data().pw : DEFAULT_ADMIN_PW;
+  } catch(e) { return DEFAULT_ADMIN_PW; }
 }
 
-async function doLogin(){
-  await loadPw();
-  const pw = document.getElementById('pw-input').value;
-  if(pw === currentPw){
+window.doLogin = async function() {
+  const pw = await getAdminPw();
+  const input = document.getElementById('pw-input').value;
+  if(input === pw) {
     document.getElementById('login-view').style.display='none';
     document.getElementById('admin-view').style.display='block';
     loadAll();
@@ -244,227 +188,168 @@ async function doLogin(){
   }
 }
 
-// ── 비밀번호 변경 영역 토글 ──────────────────────────────────
-function togglePwBox(){
+window.togglePwBox = function() {
   const box = document.getElementById('pw-box');
-  const isOpen = box.style.display !== 'none';
-  box.style.display = isOpen ? 'none' : 'block';
-  if(!isOpen){
-    document.getElementById('pw-current').value='';
-    document.getElementById('pw-new').value='';
-    document.getElementById('pw-confirm').value='';
-    document.getElementById('pw-msg').style.display='none';
-  }
+  box.style.display = box.style.display==='none' ? 'block' : 'none';
 }
 
-// ── 비밀번호 변경 ─────────────────────────────────────────────
-async function changePw(){
+window.toggleStudentPwBox = function() {
+  const box = document.getElementById('student-pw-box');
+  box.style.display = box.style.display==='none' ? 'block' : 'none';
+}
+
+window.changePw = async function() {
   const cur = document.getElementById('pw-current').value;
-  const nw  = document.getElementById('pw-new').value;
+  const nw = document.getElementById('pw-new').value;
   const cfm = document.getElementById('pw-confirm').value;
   const msg = document.getElementById('pw-msg');
   msg.className='pw-msg'; msg.style.display='none';
-
-  if(cur !== currentPw){
-    msg.textContent='현재 비밀번호가 틀렸어요.'; msg.classList.add('error'); msg.style.display='block'; return;
-  }
-  if(nw.length < 4){
-    msg.textContent='비밀번호는 4자 이상이어야 해요.'; msg.classList.add('error'); msg.style.display='block'; return;
-  }
-  if(nw !== cfm){
-    msg.textContent='새 비밀번호가 일치하지 않아요.'; msg.classList.add('error'); msg.style.display='block'; return;
-  }
-  try{
-    await window.storage.set(STORAGE_PW_KEY, nw, false);
-    currentPw = nw;
-    document.getElementById('pw-current').value='';
-    document.getElementById('pw-new').value='';
-    document.getElementById('pw-confirm').value='';
-    msg.textContent='비밀번호가 변경되었어요!'; msg.classList.add('success'); msg.style.display='block'; setTimeout(()=>{document.getElementById('pw-box').style.display='none'; msg.style.display='none';}, 2000);
-  }catch(e){
-    msg.textContent='저장 중 오류가 발생했어요.'; msg.classList.add('error'); msg.style.display='block';
-  }
+  const currentPw = await getAdminPw();
+  if(cur !== currentPw){ msg.textContent='현재 비밀번호가 틀렸어요.'; msg.classList.add('error'); msg.style.display='block'; return; }
+  if(nw.length < 4){ msg.textContent='4자 이상 입력해주세요.'; msg.classList.add('error'); msg.style.display='block'; return; }
+  if(nw !== cfm){ msg.textContent='비밀번호가 일치하지 않아요.'; msg.classList.add('error'); msg.style.display='block'; return; }
+  await setDoc(doc(db, 'settings', 'adminPw'), {pw: nw});
+  msg.textContent='비밀번호가 변경되었어요!'; msg.classList.add('success'); msg.style.display='block';
+  setTimeout(()=>{ document.getElementById('pw-box').style.display='none'; msg.style.display='none'; }, 2000);
 }
 
-function toggleStudentPwBox(){
-  const box = document.getElementById('student-pw-box');
-  const isOpen = box.style.display !== 'none';
-  box.style.display = isOpen ? 'none' : 'block';
-  if(!isOpen){
-    document.getElementById('student-pw-new').value='';
-    document.getElementById('student-pw-confirm').value='';
-    document.getElementById('student-pw-msg').style.display='none';
-  }
-}
-
-async function changeStudentPw(){
-  const nw  = document.getElementById('student-pw-new').value.trim();
+window.changeStudentPw = async function() {
+  const nw = document.getElementById('student-pw-new').value.trim();
   const cfm = document.getElementById('student-pw-confirm').value.trim();
   const msg = document.getElementById('student-pw-msg');
   msg.className='pw-msg'; msg.style.display='none';
   if(!nw){ msg.textContent='비밀번호를 입력해주세요.'; msg.classList.add('error'); msg.style.display='block'; return; }
   if(nw !== cfm){ msg.textContent='비밀번호가 일치하지 않아요.'; msg.classList.add('error'); msg.style.display='block'; return; }
-  try{
-    await window.storage.set('student:password', nw, false);
-    document.getElementById('student-pw-new').value='';
-    document.getElementById('student-pw-confirm').value='';
-    msg.textContent=`학생 비밀번호가 "${nw}"(으)로 변경되었어요!`;
-    msg.classList.add('success'); msg.style.display='block';
-    setTimeout(()=>{ document.getElementById('student-pw-box').style.display='none'; msg.style.display='none'; }, 2500);
-  }catch(e){
-    msg.textContent='저장 중 오류가 발생했어요.'; msg.classList.add('error'); msg.style.display='block';
-  }
+  await setDoc(doc(db, 'settings', 'studentPw'), {pw: nw});
+  msg.textContent=`학생 비밀번호가 "${nw}"(으)로 변경됐어요!`; msg.classList.add('success'); msg.style.display='block';
+  setTimeout(()=>{ document.getElementById('student-pw-box').style.display='none'; msg.style.display='none'; }, 2500);
 }
 
-// ── 예약 목록 로드 ────────────────────────────────────────────
-async function loadAll(){
+window.loadAll = async function() {
   document.getElementById('content').innerHTML='<div class="loading">불러오는 중...</div>';
-  try{
-    const result = await window.storage.list('booking:', true);
-    const keys = result.keys || [];
+  try {
+    const snap = await getDocs(collection(db, 'bookings'));
     const bookings = [];
-    for(const key of keys){
-      try{
-        const val = await window.storage.get(key, true);
-        if(val){
-          const parts = key.split(':');
-          const date = parts[1], slot = parts[2];
-          const info = JSON.parse(val.value);
-          bookings.push({key, date, slot, ...info});
-        }
-      }catch(e){}
-    }
-    const slotOrder = ['1','2','3','4','점심','5','6','7'];
-    bookings.sort((a,b)=>{
+    snap.forEach(d => bookings.push({id: d.id, ...d.data()}));
+    const slotOrder=['1','2','3','4','점심','5','6','7'];
+    bookings.sort((a,b) => {
       if(a.date!==b.date) return a.date.localeCompare(b.date);
       return slotOrder.indexOf(a.slot)-slotOrder.indexOf(b.slot);
     });
     allBookings = bookings;
     updateStats();
     renderAll();
-  }catch(e){
+  } catch(e) {
     document.getElementById('content').innerHTML='<div class="empty">데이터를 불러올 수 없어요.</div>';
   }
 }
 
-function updateStats(){
+function updateStats() {
   const today = new Date().toISOString().slice(0,10);
   document.getElementById('stat-total').textContent = allBookings.length;
   document.getElementById('stat-upcoming').textContent = allBookings.filter(b=>b.date>=today).length;
   document.getElementById('stat-today').textContent = allBookings.filter(b=>b.bookedAt&&b.bookedAt.slice(0,10)===today).length;
 }
 
-function renderAll(){
+window.renderAll = function() {
   const nameFilter = document.getElementById('filter-name').value.trim();
   let list = allBookings;
   if(nameFilter) list = list.filter(b=>b.name&&b.name.includes(nameFilter));
-  document.getElementById('result-count').textContent=`총 ${list.length}건`;
-
-  if(list.length===0){
-    document.getElementById('content').innerHTML='<div class="empty">신청 내역이 없어요.</div>';
-    return;
-  }
-
+  document.getElementById('result-count').textContent = `총 ${list.length}건`;
+  if(list.length===0){ document.getElementById('content').innerHTML='<div class="empty">신청 내역이 없어요.</div>'; return; }
   const groups = {};
   list.forEach(b=>{ if(!groups[b.date]) groups[b.date]=[]; groups[b.date].push(b); });
-
   const wrap = document.createElement('div');
-  Object.keys(groups).sort().forEach(date=>{
+  Object.keys(groups).sort().forEach(date => {
     const items = groups[date];
     const dt = new Date(date+'T00:00:00');
     const dateStr = `${dt.getFullYear()}년 ${dt.getMonth()+1}월 ${dt.getDate()}일 (${DAY_NAMES[dt.getDay()]})`;
-
     const section = document.createElement('div');
     section.className='date-section';
-
     const hdr = document.createElement('div');
     hdr.className='date-header';
     hdr.innerHTML=`<span class="date-title">📅 ${dateStr}</span><span class="date-count">${items.length}명</span>`;
     section.appendChild(hdr);
-
     const tbl = document.createElement('table');
     tbl.className='day-table';
     tbl.innerHTML=`<thead><tr>
-      <th style="width:110px;">교시</th>
-      <th style="width:70px;">이름</th>
-      <th style="width:120px;">학년·반·번호</th>
-      <th>상담 내용</th>
-      <th style="width:95px;">관리</th>
+      <th style="width:110px;">교시</th><th style="width:70px;">이름</th>
+      <th style="width:130px;">학번</th><th>상담 내용</th><th style="width:95px;">관리</th>
     </tr></thead>`;
     const tbody = document.createElement('tbody');
     items.forEach(b=>{
-      const tr = document.createElement('tr');
+      const tr=document.createElement('tr');
       tr.innerHTML=`
         <td><span class="slot-badge">${TIME_LABELS[b.slot]||b.slot}</span></td>
         <td><strong>${b.name||'-'}</strong></td>
         <td style="font-size:12px;">${b.cls||'-'}</td>
         <td><div class="memo-cell" title="${b.content||''}">${b.content||'-'}</div></td>
         <td><div class="actions">
-          <button class="btn btn-sm" onclick="openEdit('${b.key}')">수정</button>
-          <button class="btn btn-sm btn-danger" onclick="cancelBooking('${b.key}','${b.name}','${dateStr}')">취소</button>
-        </div></td>
-      `;
+          <button class="btn btn-sm" onclick="window.openEdit('${b.id}')">수정</button>
+          <button class="btn btn-sm btn-danger" onclick="window.cancelBooking('${b.id}','${b.name}','${dateStr}')">취소</button>
+        </div></td>`;
       tbody.appendChild(tr);
     });
     tbl.appendChild(tbody);
     section.appendChild(tbl);
     wrap.appendChild(section);
   });
-
   document.getElementById('content').innerHTML='';
   document.getElementById('content').appendChild(wrap);
 }
 
-// ── 수정 모달 ─────────────────────────────────────────────────
-function openEdit(key){
-  const b = allBookings.find(x=>x.key===key);
+window.openEdit = function(id) {
+  const b = allBookings.find(x=>x.id===id);
   if(!b) return;
-  editingOrigKey = key;
+  editingId = id;
+  document.getElementById('edit-id').value = id;
   document.getElementById('edit-date').value = b.date;
   document.getElementById('edit-slot').value = b.slot;
   document.getElementById('edit-name').value = b.name||'';
   document.getElementById('edit-cls').value = b.cls||'';
-  document.getElementById('edit-phone').value = b.phone||'';
   document.getElementById('edit-content').value = b.content||'';
   document.getElementById('edit-modal').classList.add('open');
 }
-function closeModal(){ document.getElementById('edit-modal').classList.remove('open'); editingOrigKey=null; }
 
-async function saveEdit(){
-  const newDate = document.getElementById('edit-date').value;
-  const newSlot = document.getElementById('edit-slot').value;
-  const name    = document.getElementById('edit-name').value.trim();
-  const cls     = document.getElementById('edit-cls').value.trim();
-  const phone   = document.getElementById('edit-phone').value.trim();
-  const content = document.getElementById('edit-content').value.trim();
-  if(!newDate||!newSlot||!name){ alert('날짜, 교시, 이름은 필수예요.'); return; }
-
-  const newKey = `booking:${newDate}:${newSlot}`;
-  if(newKey !== editingOrigKey){
-    const conflict = allBookings.find(b=>b.key===newKey);
-    if(conflict){ alert(`${TIME_LABELS[newSlot]}은 이미 ${conflict.name} 학생이 예약했어요.`); return; }
-  }
-  const orig = allBookings.find(b=>b.key===editingOrigKey);
-  const newInfo = { name, cls, phone, content, bookedAt: orig?.bookedAt||new Date().toISOString(), updatedAt: new Date().toISOString() };
-  try{
-    if(newKey!==editingOrigKey) await window.storage.delete(editingOrigKey, true);
-    await window.storage.set(newKey, JSON.stringify(newInfo), true);
-    const idx = allBookings.findIndex(b=>b.key===editingOrigKey);
-    if(idx!==-1) allBookings[idx]={key:newKey, date:newDate, slot:newSlot, ...newInfo};
-    updateStats(); renderAll(); closeModal();
-  }catch(e){ alert('저장 중 오류가 발생했어요.'); }
+window.closeModal = function() {
+  document.getElementById('edit-modal').classList.remove('open');
+  editingId = null;
 }
 
-async function cancelBooking(key, name, dateStr){
+window.saveEdit = async function() {
+  const newDate = document.getElementById('edit-date').value;
+  const newSlot = document.getElementById('edit-slot').value;
+  const name = document.getElementById('edit-name').value.trim();
+  const cls = document.getElementById('edit-cls').value.trim();
+  const content = document.getElementById('edit-content').value.trim();
+  if(!newDate||!newSlot||!name){ alert('날짜, 교시, 이름은 필수예요.'); return; }
+  const newId = newDate+'_'+newSlot;
+  if(newId !== editingId) {
+    const conflict = allBookings.find(b=>b.id===newId);
+    if(conflict){ alert(`${TIME_LABELS[newSlot]}은 이미 ${conflict.name} 학생이 예약했어요.`); return; }
+  }
+  const orig = allBookings.find(b=>b.id===editingId);
+  const newInfo = {date:newDate, slot:newSlot, name, cls, content, pw:orig?.pw||'', bookedAt:orig?.bookedAt||new Date().toISOString(), updatedAt:new Date().toISOString()};
+  try {
+    if(newId !== editingId) await deleteDoc(doc(db, 'bookings', editingId));
+    await setDoc(doc(db, 'bookings', newId), newInfo);
+    const idx = allBookings.findIndex(b=>b.id===editingId);
+    if(idx!==-1) allBookings[idx]={id:newId, ...newInfo};
+    updateStats(); renderAll(); closeModal();
+  } catch(e){ alert('저장 중 오류가 발생했어요.'); }
+}
+
+window.cancelBooking = async function(id, name, dateStr) {
   if(!confirm(`${name} 학생의 ${dateStr} 상담 신청을 취소할까요?`)) return;
-  try{
-    await window.storage.delete(key, true);
-    allBookings = allBookings.filter(b=>b.key!==key);
+  try {
+    await deleteDoc(doc(db, 'bookings', id));
+    allBookings = allBookings.filter(b=>b.id!==id);
     updateStats(); renderAll();
-  }catch(e){ alert('취소 처리 중 오류가 발생했어요.'); }
+  } catch(e){ alert('취소 처리 중 오류가 발생했어요.'); }
 }
 
 document.getElementById('edit-modal').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
 </script>
 </body>
 </html>
+
