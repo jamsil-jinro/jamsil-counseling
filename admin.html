@@ -144,9 +144,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-seri
   </div>
 </div>
 
-<script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, doc, setDoc, getDoc, getDocs, collection, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
 
 const firebaseConfig = {
   apiKey: "AIzaSyDs7f6060iELukTWtbRFGfkFuGwx-brSlQ",
@@ -157,8 +157,8 @@ const firebaseConfig = {
   appId: "1:305921970622:web:93b25845c78b696abe69ef"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 const DEFAULT_ADMIN_PW = '1234';
 const TIME_LABELS = {
@@ -170,8 +170,8 @@ let allBookings = [], editingId = null;
 
 async function getAdminPw() {
   try {
-    const snap = await getDoc(doc(db, 'settings', 'adminPw'));
-    return snap.exists() ? snap.data().pw : DEFAULT_ADMIN_PW;
+    const snap = await db.collection('settings').doc('adminPw').get();
+    return snap.exists ? snap.data().pw : DEFAULT_ADMIN_PW;
   } catch(e) { return DEFAULT_ADMIN_PW; }
 }
 
@@ -208,7 +208,7 @@ window.changePw = async function() {
   if(cur !== currentPw){ msg.textContent='현재 비밀번호가 틀렸어요.'; msg.classList.add('error'); msg.style.display='block'; return; }
   if(nw.length < 4){ msg.textContent='4자 이상 입력해주세요.'; msg.classList.add('error'); msg.style.display='block'; return; }
   if(nw !== cfm){ msg.textContent='비밀번호가 일치하지 않아요.'; msg.classList.add('error'); msg.style.display='block'; return; }
-  await setDoc(doc(db, 'settings', 'adminPw'), {pw: nw});
+  await db.collection('settings').doc('adminPw').set({pw: nw});
   msg.textContent='비밀번호가 변경되었어요!'; msg.classList.add('success'); msg.style.display='block';
   setTimeout(()=>{ document.getElementById('pw-box').style.display='none'; msg.style.display='none'; }, 2000);
 }
@@ -220,7 +220,7 @@ window.changeStudentPw = async function() {
   msg.className='pw-msg'; msg.style.display='none';
   if(!nw){ msg.textContent='비밀번호를 입력해주세요.'; msg.classList.add('error'); msg.style.display='block'; return; }
   if(nw !== cfm){ msg.textContent='비밀번호가 일치하지 않아요.'; msg.classList.add('error'); msg.style.display='block'; return; }
-  await setDoc(doc(db, 'settings', 'studentPw'), {pw: nw});
+  await db.collection('settings').doc('studentPw').set({pw: nw});
   msg.textContent=`학생 비밀번호가 "${nw}"(으)로 변경됐어요!`; msg.classList.add('success'); msg.style.display='block';
   setTimeout(()=>{ document.getElementById('student-pw-box').style.display='none'; msg.style.display='none'; }, 2500);
 }
@@ -228,7 +228,7 @@ window.changeStudentPw = async function() {
 window.loadAll = async function() {
   document.getElementById('content').innerHTML='<div class="loading">불러오는 중...</div>';
   try {
-    const snap = await getDocs(collection(db, 'bookings'));
+    const snap = await db.collection('bookings').get();
     const bookings = [];
     snap.forEach(d => bookings.push({id: d.id, ...d.data()}));
     const slotOrder=['1','2','3','4','점심','5','6','7'];
@@ -331,8 +331,8 @@ window.saveEdit = async function() {
   const orig = allBookings.find(b=>b.id===editingId);
   const newInfo = {date:newDate, slot:newSlot, name, cls, content, pw:orig?.pw||'', bookedAt:orig?.bookedAt||new Date().toISOString(), updatedAt:new Date().toISOString()};
   try {
-    if(newId !== editingId) await deleteDoc(doc(db, 'bookings', editingId));
-    await setDoc(doc(db, 'bookings', newId), newInfo);
+    if(newId !== editingId) await db.collection('bookings').doc(editingId).delete();
+    await db.collection('bookings').doc(newId).set(newInfo);
     const idx = allBookings.findIndex(b=>b.id===editingId);
     if(idx!==-1) allBookings[idx]={id:newId, ...newInfo};
     updateStats(); renderAll(); closeModal();
@@ -342,7 +342,7 @@ window.saveEdit = async function() {
 window.cancelBooking = async function(id, name, dateStr) {
   if(!confirm(`${name} 학생의 ${dateStr} 상담 신청을 취소할까요?`)) return;
   try {
-    await deleteDoc(doc(db, 'bookings', id));
+    await db.collection('bookings').doc(id).delete();
     allBookings = allBookings.filter(b=>b.id!==id);
     updateStats(); renderAll();
   } catch(e){ alert('취소 처리 중 오류가 발생했어요.'); }
@@ -352,4 +352,3 @@ document.getElementById('edit-modal').addEventListener('click', function(e){ if(
 </script>
 </body>
 </html>
-
