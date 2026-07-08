@@ -76,8 +76,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-seri
   <div id="login-view">
     <div class="login-box">
       <h2>🔒 관리자 로그인</h2>
-      <input type="password" id="pw-input" placeholder="비밀번호" onkeydown="if(event.key==='Enter')doLogin()" />
-      <button class="login-btn" onclick="doLogin()">로그인</button>
+      <input type="password" id="pw-input" placeholder="비밀번호" id="pw-input" />
+      <button class="login-btn" id="btn-login">로그인</button>
       <div class="login-error" id="login-error">비밀번호가 틀렸어요.</div>
     </div>
 
@@ -144,8 +144,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-seri
   </div>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script>
 
 const firebaseConfig = {
@@ -175,7 +175,7 @@ async function getAdminPw() {
   } catch(e) { return DEFAULT_ADMIN_PW; }
 }
 
-window.doLogin = async function() {
+async function doLogin() {
   const pw = await getAdminPw();
   const input = document.getElementById('pw-input').value;
   if(input === pw) {
@@ -188,17 +188,17 @@ window.doLogin = async function() {
   }
 }
 
-window.togglePwBox = function() {
+function togglePwBox() {
   const box = document.getElementById('pw-box');
   box.style.display = box.style.display==='none' ? 'block' : 'none';
 }
 
-window.toggleStudentPwBox = function() {
+function toggleStudentPwBox() {
   const box = document.getElementById('student-pw-box');
   box.style.display = box.style.display==='none' ? 'block' : 'none';
 }
 
-window.changePw = async function() {
+async function changePw() {
   const cur = document.getElementById('pw-current').value;
   const nw = document.getElementById('pw-new').value;
   const cfm = document.getElementById('pw-confirm').value;
@@ -213,7 +213,7 @@ window.changePw = async function() {
   setTimeout(()=>{ document.getElementById('pw-box').style.display='none'; msg.style.display='none'; }, 2000);
 }
 
-window.changeStudentPw = async function() {
+async function changeStudentPw() {
   const nw = document.getElementById('student-pw-new').value.trim();
   const cfm = document.getElementById('student-pw-confirm').value.trim();
   const msg = document.getElementById('student-pw-msg');
@@ -225,7 +225,7 @@ window.changeStudentPw = async function() {
   setTimeout(()=>{ document.getElementById('student-pw-box').style.display='none'; msg.style.display='none'; }, 2500);
 }
 
-window.loadAll = async function() {
+async function loadAll() {
   document.getElementById('content').innerHTML='<div class="loading">불러오는 중...</div>';
   try {
     const snap = await db.collection('bookings').get();
@@ -251,7 +251,7 @@ function updateStats() {
   document.getElementById('stat-today').textContent = allBookings.filter(b=>b.bookedAt&&b.bookedAt.slice(0,10)===today).length;
 }
 
-window.renderAll = function() {
+function renderAll() {
   const nameFilter = document.getElementById('filter-name').value.trim();
   let list = allBookings;
   if(nameFilter) list = list.filter(b=>b.name&&b.name.includes(nameFilter));
@@ -285,8 +285,8 @@ window.renderAll = function() {
         <td style="font-size:12px;">${b.cls||'-'}</td>
         <td><div class="memo-cell" title="${b.content||''}">${b.content||'-'}</div></td>
         <td><div class="actions">
-          <button class="btn btn-sm" onclick="window.openEdit('${b.id}')">수정</button>
-          <button class="btn btn-sm btn-danger" onclick="window.cancelBooking('${b.id}','${b.name}','${dateStr}')">취소</button>
+          <button class="btn btn-sm" onclick="openEdit('${b.id}')">수정</button>
+          <button class="btn btn-sm btn-danger" onclick="cancelBooking('${b.id}','${b.name}','${dateStr}')">취소</button>
         </div></td>`;
       tbody.appendChild(tr);
     });
@@ -298,7 +298,7 @@ window.renderAll = function() {
   document.getElementById('content').appendChild(wrap);
 }
 
-window.openEdit = function(id) {
+function openEdit(id) {
   const b = allBookings.find(x=>x.id===id);
   if(!b) return;
   editingId = id;
@@ -311,12 +311,12 @@ window.openEdit = function(id) {
   document.getElementById('edit-modal').classList.add('open');
 }
 
-window.closeModal = function() {
+function closeModal() {
   document.getElementById('edit-modal').classList.remove('open');
   editingId = null;
 }
 
-window.saveEdit = async function() {
+async function saveEdit() {
   const newDate = document.getElementById('edit-date').value;
   const newSlot = document.getElementById('edit-slot').value;
   const name = document.getElementById('edit-name').value.trim();
@@ -339,7 +339,7 @@ window.saveEdit = async function() {
   } catch(e){ alert('저장 중 오류가 발생했어요.'); }
 }
 
-window.cancelBooking = async function(id, name, dateStr) {
+async function cancelBooking(id, name, dateStr) {
   if(!confirm(`${name} 학생의 ${dateStr} 상담 신청을 취소할까요?`)) return;
   try {
     await db.collection('bookings').doc(id).delete();
@@ -349,6 +349,11 @@ window.cancelBooking = async function(id, name, dateStr) {
 }
 
 document.getElementById('edit-modal').addEventListener('click', function(e){ if(e.target===this) closeModal(); });
+
+// 이벤트 리스너
+document.getElementById('btn-login').addEventListener('click', doLogin);
+document.getElementById('pw-input').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+
 </script>
 </body>
 </html>
