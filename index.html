@@ -20,8 +20,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-seri
 .login-btn:hover { background: #2f6bbf; }
 .login-error { font-size: 12px; color: #e24b4a; margin-top: 8px; display: none; }
 .lookup-link { margin-top: 0.8rem; }
-.lookup-link button { width: 100%; max-width: 320px; display: block; margin: 0 auto; padding: 13px 16px; background: #fff; border: 1.5px solid #3b7dd8; border-radius: 10px; font-size: 15px; font-weight: 600; color: #3b7dd8; cursor: pointer; font-family: inherit; }
-.lookup-link button:hover { background: #eef4fd; }
+.lookup-link-btn { width: 100%; max-width: 320px; display: block; margin: 0 auto; padding: 13px 16px; background: #fff; border: 1.5px solid #3b7dd8; border-radius: 10px; font-size: 15px; font-weight: 600; color: #3b7dd8; cursor: pointer; font-family: inherit; }
+.lookup-link-btn:hover { background: #eef4fd; }
 .step-indicator { display: flex; gap: 6px; margin-bottom: 1.2rem; }
 .step-dot { height: 4px; flex: 1; border-radius: 2px; background: #ddd; }
 .step-dot.active { background: #3b7dd8; }
@@ -101,19 +101,21 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-seri
     <p>잠실고등학교 진로진학부</p>
   </div>
 
+  <!-- ① 로그인 -->
   <div id="view-login">
     <div class="login-box">
       <h2>🔒 상담 신청</h2>
       <p>선생님께 받은 비밀번호를 입력하세요</p>
-      <input type="password" id="student-pw" placeholder="비밀번호" onkeydown="if(event.key==='Enter')studentLogin()" />
-      <button class="login-btn" onclick="studentLogin()">입력</button>
+      <input type="password" id="student-pw" placeholder="비밀번호" />
+      <button class="login-btn" id="btn-login">입력</button>
       <div class="login-error" id="login-error">비밀번호가 틀렸어요.</div>
     </div>
     <div class="lookup-link">
-      <button onclick="showView('lookup')">🔍 이미 신청했어요 — 조회·취소하기</button>
+      <button class="lookup-link-btn" id="btn-to-lookup">🔍 이미 신청했어요 — 조회·취소하기</button>
     </div>
   </div>
 
+  <!-- ② 달력 -->
   <div id="view-calendar" style="display:none;">
     <div class="step-indicator">
       <div class="step-dot active"></div>
@@ -121,9 +123,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-seri
       <div class="step-dot"></div>
     </div>
     <div class="month-nav">
-      <button onclick="changeMonth(-1)">&#8249;</button>
+      <button id="btn-prev">&#8249;</button>
       <span class="month-title" id="month-title"></span>
-      <button onclick="changeMonth(1)">&#8250;</button>
+      <button id="btn-next">&#8250;</button>
     </div>
     <div class="notice">📌 2026년 7월만 신청 가능합니다. 2학기 시간표 확정 후 업데이트 예정이에요.</div>
     <div class="legend">
@@ -134,7 +136,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-seri
       <div class="legend-item"><div class="legend-dot ev-holiday"></div>공휴일</div>
     </div>
     <div class="cal-grid" id="cal-grid"></div>
-    <div class="slot-section" id="slot-section" style="display:none;">
+    <div id="slot-section" style="display:none; margin-top:1.2rem;">
       <div class="date-bar">
         <span id="date-label" style="font-weight:600;"></span>
         <span id="date-sub" style="font-size:12px;color:#888;"></span>
@@ -142,10 +144,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-seri
       <div id="blocked-msg" class="blocked-msg" style="display:none;"></div>
       <div id="time-loading" class="loading-msg" style="display:none;">⏳ 예약 현황 확인 중...</div>
       <div class="time-grid" id="time-grid" style="display:none;"></div>
-      <button class="submit-btn" id="btn-next1" style="display:none;" disabled onclick="goStep2()">다음 →</button>
+      <button class="submit-btn" id="btn-next1" style="display:none;" disabled>다음 →</button>
     </div>
   </div>
 
+  <!-- ③ 정보 입력 -->
   <div id="view-form" style="display:none;">
     <div class="step-indicator">
       <div class="step-dot done"></div>
@@ -156,11 +159,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-seri
     <div class="section-label">학생 정보</div>
     <div class="form-group">
       <label>이름 <span style="color:#e24b4a;">*</span></label>
-      <input type="text" id="inp-name" placeholder="홍길동" oninput="checkForm()" />
+      <input type="text" id="inp-name" placeholder="홍길동" />
     </div>
     <div class="form-group">
       <label>학번 <span style="color:#e24b4a;">*</span></label>
-      <input type="text" id="inp-cls" placeholder="예: 2-3-15" oninput="checkForm()" />
+      <input type="text" id="inp-cls" placeholder="예: 2-3-15" />
     </div>
     <div class="form-group">
       <label>상담 받고 싶은 내용 (선택)</label>
@@ -168,13 +171,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-seri
     </div>
     <div class="form-group">
       <label>나만의 비밀번호 설정 <span style="color:#e24b4a;">*</span></label>
-      <input type="password" id="inp-pw" placeholder="나중에 조회·취소 시 사용" oninput="checkForm()" />
+      <input type="password" id="inp-pw" placeholder="나중에 조회·취소 시 사용" />
       <p class="form-hint">숫자·문자 조합 4자리 이상 권장</p>
     </div>
-    <button class="submit-btn" id="btn-submit" disabled onclick="submitForm()">신청 완료</button>
-    <div style="text-align:center;"><button class="back-btn" onclick="showView('calendar')">← 날짜 다시 선택</button></div>
+    <button class="submit-btn" id="btn-submit" disabled>신청 완료</button>
+    <div style="text-align:center;"><button class="back-btn" id="btn-back-cal">← 날짜 다시 선택</button></div>
   </div>
 
+  <!-- ④ 완료 -->
   <div id="view-done" style="display:none;">
     <div style="text-align:center; padding:1.5rem 0 0.5rem;">
       <div style="font-size:52px;">✅</div>
@@ -193,12 +197,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-seri
       <div class="confirm-row" id="done-content-row" style="display:none;"><span class="confirm-label">💬 내용</span><span class="confirm-value" id="done-content"></span></div>
     </div>
     <p style="font-size:12px;color:#aaa;text-align:center;margin-bottom:1rem;">설정한 비밀번호를 기억해두세요.<br>조회·취소 시 학번과 비밀번호가 필요해요.</p>
-    <button class="submit-btn" onclick="showView('login')" style="background:#f4f4f2;color:#555;">처음으로</button>
+    <button class="submit-btn" id="btn-go-home" style="background:#f4f4f2;color:#555;">🏠 처음 화면으로 돌아가기</button>
   </div>
 
+  <!-- ⑤ 조회·취소 -->
   <div id="view-lookup" style="display:none;">
     <div style="margin-bottom:1rem;">
-      <button class="back-btn" style="margin-top:0;" onclick="showView('login')">← 돌아가기</button>
+      <button class="back-btn" id="btn-lookup-back" style="margin-top:0;">← 돌아가기</button>
     </div>
     <div class="lookup-box">
       <h3>🔍 내 신청 조회·취소</h3>
@@ -208,19 +213,18 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-seri
       </div>
       <div class="form-group">
         <label>비밀번호</label>
-        <input type="password" id="lookup-pw" placeholder="신청 시 설정한 비밀번호" onkeydown="if(event.key==='Enter')lookupBooking()" />
+        <input type="password" id="lookup-pw" placeholder="신청 시 설정한 비밀번호" />
       </div>
-      <button class="submit-btn" onclick="lookupBooking()">조회하기</button>
+      <button class="submit-btn" id="btn-lookup">조회하기</button>
       <div class="lookup-error" id="lookup-error">학번 또는 비밀번호가 맞지 않아요.</div>
     </div>
     <div id="lookup-result"></div>
   </div>
 </div>
 
-<!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, doc, setDoc, getDoc, getDocs, collection, query, where, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getFirestore, doc, setDoc, getDoc, getDocs, collection, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDs7f6060iELukTWtbRFGfkFuGwx-brSlQ",
@@ -234,12 +238,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// ── 상수 ────────────────────────────────────────────────────
 const AVAILABLE_BY_DOW = {
-  1: ['3','점심'],
-  2: ['1','2','3','4','점심','5'],
-  3: ['1','3','점심','5'],
-  4: ['3','4','점심'],
+  1: ['3','점심'], 2: ['1','2','3','4','점심','5'],
+  3: ['1','3','점심','5'], 4: ['3','4','점심'],
   5: ['1','3','4','점심','5']
 };
 const TIME_LABELS = {
@@ -249,257 +250,257 @@ const TIME_LABELS = {
 };
 const ALL_SLOTS = ['1','2','3','4','점심','5','6','7'];
 const DAY_NAMES = ['일','월','화','수','목','금','토'];
-const DEFAULT_STUDENT_PW = '0000';
 const BLOCKED_MAP = {
-  '2026-07-01':'기말고사','2026-07-02':'기말고사',
-  '2026-07-03':'기말고사','2026-07-06':'기말고사',
-  '2026-07-14':'출장','2026-07-17':'제헌절','2026-07-22':'방학식',
+  '2026-07-01':'기말고사','2026-07-02':'기말고사','2026-07-03':'기말고사',
+  '2026-07-06':'기말고사','2026-07-14':'출장','2026-07-17':'제헌절','2026-07-22':'방학식',
 };
 const EVENTS = {
   '2026-07-01':[{t:'기말고사',c:'ev-exam'}],'2026-07-02':[{t:'기말고사',c:'ev-exam'}],
   '2026-07-03':[{t:'기말고사',c:'ev-exam'}],'2026-07-06':[{t:'기말고사',c:'ev-exam'}],
-  '2026-07-07':[{t:'전국연합',c:'ev-mock'}],
-  '2026-07-14':[{t:'출장',c:'ev-event'}],
+  '2026-07-07':[{t:'전국연합',c:'ev-mock'}],'2026-07-14':[{t:'출장',c:'ev-event'}],
   '2026-07-15':[{t:'교육과정박람회',c:'ev-event'}],
-  '2026-07-17':[{t:'제헌절',c:'ev-holiday'}],
-  '2026-07-22':[{t:'방학식',c:'ev-vacation'}],
+  '2026-07-17':[{t:'제헌절',c:'ev-holiday'}],'2026-07-22':[{t:'방학식',c:'ev-vacation'}],
 };
 const RANGE_END = '2026-07-21';
 let curYear=2026, curMonth=6, selectedDate=null, selectedSlot=null;
 
-// ── Firebase 함수 ────────────────────────────────────────────
+// ── Firebase ─────────────────────────────────────────────────
 async function getStudentPw() {
   try {
-    const snap = await getDoc(doc(db, 'settings', 'studentPw'));
-    return snap.exists() ? snap.data().pw : DEFAULT_STUDENT_PW;
-  } catch(e) { return DEFAULT_STUDENT_PW; }
+    const snap = await getDoc(doc(db,'settings','studentPw'));
+    return snap.exists() ? snap.data().pw : '0000';
+  } catch(e) { return '0000'; }
 }
-
 async function getBookings(ds) {
   try {
     const booked = new Set();
-    const snap = await getDocs(collection(db, 'bookings'));
-    snap.forEach(d => { if(d.data().date === ds) booked.add(d.data().slot); });
+    const snap = await getDocs(collection(db,'bookings'));
+    snap.forEach(d => { if(d.data().date===ds) booked.add(d.data().slot); });
     return booked;
   } catch(e) { return new Set(); }
 }
-
 async function saveBooking(ds, slot, info) {
-  try {
-    const id = ds + '_' + slot;
-    await setDoc(doc(db, 'bookings', id), {date: ds, slot, ...info});
-    return true;
-  } catch(e) { return false; }
+  await setDoc(doc(db,'bookings',ds+'_'+slot), {date:ds, slot, ...info});
 }
-
 async function findBooking(cls, pw) {
   try {
-    const snap = await getDocs(collection(db, 'bookings'));
+    const snap = await getDocs(collection(db,'bookings'));
     let found = null;
     snap.forEach(d => {
       const data = d.data();
-      if(data.cls === cls && data.pw === pw) found = {id: d.id, ...data};
+      if(data.cls===cls && data.pw===pw) found = {id:d.id, ...data};
     });
     return found;
   } catch(e) { return null; }
 }
 
-async function deleteBooking(id) {
-  await deleteDoc(doc(db, 'bookings', id));
-}
-
 // ── 화면 전환 ────────────────────────────────────────────────
-window.showView = function(name) {
+function showView(name) {
   ['login','calendar','form','done','lookup'].forEach(v => {
     document.getElementById('view-'+v).style.display = v===name ? 'block' : 'none';
   });
   if(name==='calendar') renderCalendar();
 }
 
-// ── 학생 로그인 ──────────────────────────────────────────────
-window.studentLogin = async function() {
-  const pw = await getStudentPw();
-  const input = document.getElementById('student-pw').value;
-  if(input === pw) {
-    document.getElementById('login-error').style.display='none';
-    document.getElementById('student-pw').value='';
-    showView('calendar');
-  } else {
-    document.getElementById('login-error').style.display='block';
-    document.getElementById('student-pw').value='';
-  }
-}
-
 // ── 달력 ────────────────────────────────────────────────────
-window.changeMonth = function(dir) {
-  const next = curMonth + dir;
-  if(curYear===2026 && next===6){ curYear=2026; curMonth=6; renderCalendar(); }
-  else { alert('현재는 2026년 7월만 신청 가능해요.'); }
-}
-
 function renderCalendar() {
-  const mn=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+  const mn = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
   document.getElementById('month-title').textContent = curYear+'년 '+mn[curMonth];
   const grid = document.getElementById('cal-grid');
   grid.innerHTML = '';
   ['일','월','화','수','목','금','토'].forEach((d,i) => {
-    const h=document.createElement('div');
-    h.className='cal-header'+(i===0?' sun':i===6?' sat':'');
-    h.textContent=d; grid.appendChild(h);
+    const h = document.createElement('div');
+    h.className = 'cal-header'+(i===0?' sun':i===6?' sat':'');
+    h.textContent = d; grid.appendChild(h);
   });
-  const firstDay=new Date(curYear,curMonth,1).getDay();
-  const dim=new Date(curYear,curMonth+1,0).getDate();
-  for(let i=0;i<firstDay;i++){const e=document.createElement('div');e.className='cal-cell empty';grid.appendChild(e);}
-  for(let d=1;d<=dim;d++){
-    const ds=curYear+'-'+String(curMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
-    const dow=new Date(curYear,curMonth,d).getDay();
-    const isWknd=dow===0||dow===6;
-    const outOfRange=ds>RANGE_END;
-    const blockedReason=BLOCKED_MAP[ds];
-    const isBlocked=!!blockedReason||isWknd||outOfRange;
-    const cell=document.createElement('div');
-    const numEl=document.createElement('div');
-    numEl.className='day-num'+(dow===0?' sun':dow===6?' sat':(ds==='2026-07-17'?' holi':''));
-    numEl.textContent=d;
-    const addEvents=t=>{
-      if(EVENTS[ds]) EVENTS[ds].forEach(ev=>{
+  const firstDay = new Date(curYear,curMonth,1).getDay();
+  const dim = new Date(curYear,curMonth+1,0).getDate();
+  for(let i=0;i<firstDay;i++){ const e=document.createElement('div'); e.className='cal-cell empty'; grid.appendChild(e); }
+  for(let d=1;d<=dim;d++) {
+    const ds = curYear+'-'+String(curMonth+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');
+    const dow = new Date(curYear,curMonth,d).getDay();
+    const isWknd = dow===0||dow===6;
+    const outOfRange = ds>RANGE_END;
+    const blockedReason = BLOCKED_MAP[ds];
+    const isBlocked = !!blockedReason||isWknd||outOfRange;
+    const cell = document.createElement('div');
+    const numEl = document.createElement('div');
+    numEl.className = 'day-num'+(dow===0?' sun':dow===6?' sat':(ds==='2026-07-17'?' holi':''));
+    numEl.textContent = d;
+    const addEvents = t => {
+      if(EVENTS[ds]) EVENTS[ds].forEach(ev => {
         const tag=document.createElement('span');
         tag.className='event-tag '+ev.c; tag.textContent=ev.t; t.appendChild(tag);
       });
     };
-    if(outOfRange){ cell.className='cal-cell blocked'; cell.appendChild(numEl); }
-    else if(isWknd){ cell.className='cal-cell blocked'; cell.appendChild(numEl); addEvents(cell); }
-    else if(isBlocked){
+    if(outOfRange) { cell.className='cal-cell blocked'; cell.appendChild(numEl); }
+    else if(isWknd) { cell.className='cal-cell blocked'; cell.appendChild(numEl); addEvents(cell); }
+    else if(isBlocked) {
       cell.className='cal-cell blocked'; cell.appendChild(numEl); addEvents(cell);
-      cell.onclick=()=>showBlocked(ds,cell,blockedReason);
+      cell.addEventListener('click', () => showBlocked(ds, cell, blockedReason));
     } else {
       cell.className='cal-cell available';
       if(ds===selectedDate) cell.classList.add('selected');
       cell.appendChild(numEl); addEvents(cell);
-      cell.onclick=()=>selectDate(ds,dow,cell);
+      cell.addEventListener('click', () => selectDate(ds, dow, cell));
     }
     grid.appendChild(cell);
   }
 }
 
-function showBlocked(ds,cell,reason){
+function showBlocked(ds, cell, reason) {
   selectedDate=null; selectedSlot=null;
   document.querySelectorAll('.cal-cell.selected').forEach(c=>c.classList.remove('selected'));
   cell.classList.add('selected');
-  const d=new Date(ds+'T00:00:00');
-  document.getElementById('date-label').textContent=(d.getMonth()+1)+'월 '+d.getDate()+'일 ('+DAY_NAMES[d.getDay()]+')';
-  document.getElementById('date-sub').textContent='';
-  document.getElementById('blocked-msg').style.display='block';
-  document.getElementById('blocked-msg').textContent='⚠️ '+reason+' 기간이라 상담 신청이 불가해요.';
-  document.getElementById('time-loading').style.display='none';
-  document.getElementById('time-grid').style.display='none';
-  document.getElementById('btn-next1').style.display='none';
-  document.getElementById('slot-section').style.display='block';
+  const d = new Date(ds+'T00:00:00');
+  document.getElementById('date-label').textContent = (d.getMonth()+1)+'월 '+d.getDate()+'일 ('+DAY_NAMES[d.getDay()]+')';
+  document.getElementById('date-sub').textContent = '';
+  document.getElementById('blocked-msg').style.display = 'block';
+  document.getElementById('blocked-msg').textContent = '⚠️ '+reason+' 기간이라 상담 신청이 불가해요.';
+  document.getElementById('time-loading').style.display = 'none';
+  document.getElementById('time-grid').style.display = 'none';
+  document.getElementById('btn-next1').style.display = 'none';
+  document.getElementById('slot-section').style.display = 'block';
   setTimeout(()=>document.getElementById('slot-section').scrollIntoView({behavior:'smooth',block:'nearest'}),50);
 }
 
-async function selectDate(ds,dow,cell){
+async function selectDate(ds, dow, cell) {
   selectedDate=ds; selectedSlot=null;
   document.querySelectorAll('.cal-cell.selected').forEach(c=>c.classList.remove('selected'));
   cell.classList.add('selected');
-  const d=new Date(ds+'T00:00:00');
-  document.getElementById('date-label').textContent=(d.getMonth()+1)+'월 '+d.getDate()+'일 ('+DAY_NAMES[d.getDay()]+')';
-  document.getElementById('date-sub').textContent='예약 현황 확인 중...';
-  document.getElementById('blocked-msg').style.display='none';
-  document.getElementById('time-loading').style.display='block';
-  document.getElementById('time-grid').style.display='none';
-  document.getElementById('btn-next1').style.display='none';
-  document.getElementById('slot-section').style.display='block';
+  const d = new Date(ds+'T00:00:00');
+  document.getElementById('date-label').textContent = (d.getMonth()+1)+'월 '+d.getDate()+'일 ('+DAY_NAMES[d.getDay()]+')';
+  document.getElementById('date-sub').textContent = '예약 현황 확인 중...';
+  document.getElementById('blocked-msg').style.display = 'none';
+  document.getElementById('time-loading').style.display = 'block';
+  document.getElementById('time-grid').style.display = 'none';
+  document.getElementById('btn-next1').style.display = 'none';
+  document.getElementById('slot-section').style.display = 'block';
   setTimeout(()=>document.getElementById('slot-section').scrollIntoView({behavior:'smooth',block:'nearest'}),50);
-  const booked=await getBookings(ds);
-  document.getElementById('time-loading').style.display='none';
-  document.getElementById('date-sub').textContent='교시를 선택하세요';
-  renderTimeGrid(AVAILABLE_BY_DOW[dow]||[], booked);
-  document.getElementById('time-grid').style.display='grid';
-  document.getElementById('btn-next1').style.display='block';
-  document.getElementById('btn-next1').disabled=true;
-}
-
-function renderTimeGrid(available,booked){
-  const grid=document.getElementById('time-grid');
-  grid.innerHTML='';
-  ALL_SLOTS.forEach(slot=>{
-    const btn=document.createElement('div');
-    btn.className='time-btn'+(slot==='점심'?' lunch':'');
-    if(booked.has(slot)){
+  const booked = await getBookings(ds);
+  document.getElementById('time-loading').style.display = 'none';
+  document.getElementById('date-sub').textContent = '교시를 선택하세요';
+  const grid = document.getElementById('time-grid');
+  grid.innerHTML = '';
+  ALL_SLOTS.forEach(slot => {
+    const btn = document.createElement('div');
+    btn.className = 'time-btn'+(slot==='점심'?' lunch':'');
+    if(booked.has(slot)) {
       btn.classList.add('booked');
-      btn.innerHTML=TIME_LABELS[slot]+'<br><small>예약완료</small>';
-    } else if(!available.includes(slot)){
+      btn.innerHTML = TIME_LABELS[slot]+'<br><small>예약완료</small>';
+    } else if(!AVAILABLE_BY_DOW[dow]||!AVAILABLE_BY_DOW[dow].includes(slot)) {
       btn.classList.add('unavailable');
-      btn.textContent=TIME_LABELS[slot];
+      btn.textContent = TIME_LABELS[slot];
     } else {
-      btn.textContent=TIME_LABELS[slot];
-      btn.onclick=()=>{
+      btn.textContent = TIME_LABELS[slot];
+      btn.addEventListener('click', () => {
         document.querySelectorAll('.time-btn').forEach(b=>b.classList.remove('selected'));
         btn.classList.add('selected');
-        selectedSlot=slot;
-        document.getElementById('btn-next1').disabled=false;
-      };
+        selectedSlot = slot;
+        document.getElementById('btn-next1').disabled = false;
+      });
     }
     grid.appendChild(btn);
   });
+  document.getElementById('time-grid').style.display = 'grid';
+  document.getElementById('btn-next1').style.display = 'block';
+  document.getElementById('btn-next1').disabled = true;
 }
 
-window.goStep2 = function(){
-  const d=new Date(selectedDate+'T00:00:00');
-  const dateStr='2026년 '+(d.getMonth()+1)+'월 '+d.getDate()+'일 ('+DAY_NAMES[d.getDay()]+')';
-  document.getElementById('selected-summary').innerHTML='📅 <strong>'+dateStr+'</strong> · '+TIME_LABELS[selectedSlot];
-  ['inp-name','inp-cls','inp-content','inp-pw'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('btn-submit').disabled=true;
-  showView('form');
-}
-
-window.checkForm = function(){
-  const ok=document.getElementById('inp-name').value.trim()
+function checkForm() {
+  const ok = document.getElementById('inp-name').value.trim()
     && document.getElementById('inp-cls').value.trim()
-    && document.getElementById('inp-pw').value.trim().length>=1;
-  document.getElementById('btn-submit').disabled=!ok;
+    && document.getElementById('inp-pw').value.trim().length >= 1;
+  document.getElementById('btn-submit').disabled = !ok;
 }
 
-window.submitForm = async function(){
-  const btn=document.getElementById('btn-submit');
-  btn.disabled=true; btn.textContent='신청 중...';
-  const name=document.getElementById('inp-name').value.trim();
-  const cls=document.getElementById('inp-cls').value.trim();
-  const content=document.getElementById('inp-content').value.trim();
-  const pw=document.getElementById('inp-pw').value.trim();
-  const d=new Date(selectedDate+'T00:00:00');
-  const dateStr='2026년 '+(d.getMonth()+1)+'월 '+d.getDate()+'일 ('+DAY_NAMES[d.getDay()]+')';
-  const booked=await getBookings(selectedDate);
-  if(booked.has(selectedSlot)){
-    btn.disabled=false; btn.textContent='신청 완료';
-    alert('방금 다른 학생이 같은 시간을 예약했어요. 다른 교시를 선택해주세요.');
-    showView('calendar'); return;
+// ── 이벤트 리스너 등록 ──────────────────────────────────────
+document.getElementById('btn-login').addEventListener('click', async () => {
+  const pw = await getStudentPw();
+  const input = document.getElementById('student-pw').value;
+  if(input === pw) {
+    document.getElementById('login-error').style.display = 'none';
+    document.getElementById('student-pw').value = '';
+    showView('calendar');
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+    document.getElementById('student-pw').value = '';
   }
-  const ok=await saveBooking(selectedDate,selectedSlot,{name,cls,content,pw,bookedAt:new Date().toISOString()});
-  if(!ok){ btn.disabled=false; btn.textContent='신청 완료'; alert('저장 중 오류가 발생했어요. 다시 시도해주세요.'); return; }
-  document.getElementById('done-date').textContent=dateStr;
-  document.getElementById('done-slot').textContent=TIME_LABELS[selectedSlot];
-  document.getElementById('done-name').textContent=name;
-  document.getElementById('done-cls').textContent=cls;
-  if(content){ document.getElementById('done-content').textContent=content; document.getElementById('done-content-row').style.display='flex'; }
-  else { document.getElementById('done-content-row').style.display='none'; }
-  btn.textContent='신청 완료';
-  showView('done');
-}
+});
 
-window.lookupBooking = async function(){
-  const cls=document.getElementById('lookup-cls').value.trim();
-  const pw=document.getElementById('lookup-pw').value.trim();
-  const err=document.getElementById('lookup-error');
+document.getElementById('student-pw').addEventListener('keydown', async e => {
+  if(e.key==='Enter') document.getElementById('btn-login').click();
+});
+
+document.getElementById('btn-to-lookup').addEventListener('click', () => showView('lookup'));
+document.getElementById('btn-prev').addEventListener('click', () => {
+  if(!(curYear===2026 && curMonth===6)) alert('현재는 2026년 7월만 신청 가능해요.');
+  else renderCalendar();
+});
+document.getElementById('btn-next').addEventListener('click', () => {
+  alert('현재는 2026년 7월만 신청 가능해요.');
+});
+document.getElementById('btn-next1').addEventListener('click', () => {
+  const d = new Date(selectedDate+'T00:00:00');
+  const dateStr = '2026년 '+(d.getMonth()+1)+'월 '+d.getDate()+'일 ('+DAY_NAMES[d.getDay()]+')';
+  document.getElementById('selected-summary').innerHTML = '📅 <strong>'+dateStr+'</strong> · '+TIME_LABELS[selectedSlot];
+  ['inp-name','inp-cls','inp-content','inp-pw'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('btn-submit').disabled = true;
+  showView('form');
+});
+
+document.getElementById('inp-name').addEventListener('input', checkForm);
+document.getElementById('inp-cls').addEventListener('input', checkForm);
+document.getElementById('inp-pw').addEventListener('input', checkForm);
+
+document.getElementById('btn-submit').addEventListener('click', async () => {
+  const btn = document.getElementById('btn-submit');
+  btn.disabled=true; btn.textContent='신청 중...';
+  const name = document.getElementById('inp-name').value.trim();
+  const cls = document.getElementById('inp-cls').value.trim();
+  const content = document.getElementById('inp-content').value.trim();
+  const pw = document.getElementById('inp-pw').value.trim();
+  const d = new Date(selectedDate+'T00:00:00');
+  const dateStr = '2026년 '+(d.getMonth()+1)+'월 '+d.getDate()+'일 ('+DAY_NAMES[d.getDay()]+')';
+  try {
+    const booked = await getBookings(selectedDate);
+    if(booked.has(selectedSlot)) {
+      btn.disabled=false; btn.textContent='신청 완료';
+      alert('방금 다른 학생이 같은 시간을 예약했어요. 다른 교시를 선택해주세요.');
+      showView('calendar'); return;
+    }
+    await saveBooking(selectedDate, selectedSlot, {name,cls,content,pw,bookedAt:new Date().toISOString()});
+    document.getElementById('done-date').textContent = dateStr;
+    document.getElementById('done-slot').textContent = TIME_LABELS[selectedSlot];
+    document.getElementById('done-name').textContent = name;
+    document.getElementById('done-cls').textContent = cls;
+    if(content) { document.getElementById('done-content').textContent=content; document.getElementById('done-content-row').style.display='flex'; }
+    else { document.getElementById('done-content-row').style.display='none'; }
+    btn.textContent='신청 완료';
+    showView('done');
+  } catch(e) {
+    btn.disabled=false; btn.textContent='신청 완료';
+    alert('저장 중 오류가 발생했어요. 다시 시도해주세요.');
+  }
+});
+
+document.getElementById('btn-back-cal').addEventListener('click', () => showView('calendar'));
+document.getElementById('btn-go-home').addEventListener('click', () => showView('login'));
+document.getElementById('btn-lookup-back').addEventListener('click', () => showView('login'));
+
+document.getElementById('btn-lookup').addEventListener('click', async () => {
+  const cls = document.getElementById('lookup-cls').value.trim();
+  const pw = document.getElementById('lookup-pw').value.trim();
+  const err = document.getElementById('lookup-error');
   err.style.display='none';
   document.getElementById('lookup-result').innerHTML='';
-  if(!cls||!pw){ err.style.display='block'; err.textContent='학번과 비밀번호를 모두 입력해주세요.'; return; }
-  const found=await findBooking(cls,pw);
-  if(!found){ err.style.display='block'; err.textContent='학번 또는 비밀번호가 맞지 않아요.'; return; }
-  const d=new Date(found.date+'T00:00:00');
-  const dateStr='2026년 '+(d.getMonth()+1)+'월 '+d.getDate()+'일 ('+DAY_NAMES[d.getDay()]+')';
-  document.getElementById('lookup-result').innerHTML=`
+  if(!cls||!pw) { err.style.display='block'; err.textContent='학번과 비밀번호를 모두 입력해주세요.'; return; }
+  const found = await findBooking(cls, pw);
+  if(!found) { err.style.display='block'; err.textContent='학번 또는 비밀번호가 맞지 않아요.'; return; }
+  const d = new Date(found.date+'T00:00:00');
+  const dateStr = '2026년 '+(d.getMonth()+1)+'월 '+d.getDate()+'일 ('+DAY_NAMES[d.getDay()]+')';
+  const res = document.getElementById('lookup-result');
+  res.innerHTML = `
     <div class="confirm-card" style="margin-top:1rem;">
       <div class="confirm-card-header"><h3>📋 내 신청 내용</h3></div>
       <div class="confirm-row"><span class="confirm-label">📅 날짜</span><span class="confirm-value">${dateStr}</span></div>
@@ -507,20 +508,25 @@ window.lookupBooking = async function(){
       <div class="confirm-row"><span class="confirm-label">👤 이름</span><span class="confirm-value">${found.name||'-'}</span></div>
       <div class="confirm-row"><span class="confirm-label">🏫 학번</span><span class="confirm-value">${found.cls||'-'}</span></div>
       ${found.content?`<div class="confirm-row"><span class="confirm-label">💬 내용</span><span class="confirm-value">${found.content}</span></div>`:''}
-    </div>
-    <button class="cancel-btn-big" onclick="window.cancelMyBooking('${found.id}','${dateStr}','${TIME_LABELS[found.slot]||found.slot}')">❌ 이 신청 취소하기</button>
-  `;
-}
+    </div>`;
+  const cancelBtn = document.createElement('button');
+  cancelBtn.className = 'cancel-btn-big';
+  cancelBtn.textContent = '❌ 이 신청 취소하기';
+  cancelBtn.addEventListener('click', async () => {
+    if(!confirm(dateStr+' '+TIME_LABELS[found.slot]+' 상담 신청을 취소할까요?')) return;
+    try {
+      await deleteDoc(doc(db,'bookings',found.id));
+      res.innerHTML = '<div class="success-note">✅ 신청이 취소되었어요.</div>';
+      document.getElementById('lookup-cls').value='';
+      document.getElementById('lookup-pw').value='';
+    } catch(e) { alert('취소 중 오류가 발생했어요.'); }
+  });
+  res.appendChild(cancelBtn);
+});
 
-window.cancelMyBooking = async function(id,dateStr,slotLabel){
-  if(!confirm(dateStr+' '+slotLabel+' 상담 신청을 취소할까요?')) return;
-  try{
-    await deleteBooking(id);
-    document.getElementById('lookup-result').innerHTML='<div class="success-note">✅ 신청이 취소되었어요.</div>';
-    document.getElementById('lookup-cls').value='';
-    document.getElementById('lookup-pw').value='';
-  }catch(e){ alert('취소 중 오류가 발생했어요.'); }
-}
+document.getElementById('lookup-pw').addEventListener('keydown', e => {
+  if(e.key==='Enter') document.getElementById('btn-lookup').click();
+});
 
 renderCalendar();
 </script>
