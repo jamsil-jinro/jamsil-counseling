@@ -222,9 +222,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-seri
   </div>
 </div>
 
-<script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, doc, setDoc, getDoc, getDocs, collection, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script>
 
 const firebaseConfig = {
   apiKey: "AIzaSyDs7f6060iELukTWtbRFGfkFuGwx-brSlQ",
@@ -235,8 +235,8 @@ const firebaseConfig = {
   appId: "1:305921970622:web:93b25845c78b696abe69ef"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 const AVAILABLE_BY_DOW = {
   1: ['3','점심'], 2: ['1','2','3','4','점심','5'],
@@ -267,24 +267,24 @@ let curYear=2026, curMonth=6, selectedDate=null, selectedSlot=null;
 // ── Firebase ─────────────────────────────────────────────────
 async function getStudentPw() {
   try {
-    const snap = await getDoc(doc(db,'settings','studentPw'));
-    return snap.exists() ? snap.data().pw : '0000';
+    const snap = await db.collection('settings').doc('studentPw').get();
+    return snap.exists ? snap.data().pw : '0000';
   } catch(e) { return '0000'; }
 }
 async function getBookings(ds) {
   try {
     const booked = new Set();
-    const snap = await getDocs(collection(db,'bookings'));
+    const snap = await db.collection('bookings').get();
     snap.forEach(d => { if(d.data().date===ds) booked.add(d.data().slot); });
     return booked;
   } catch(e) { return new Set(); }
 }
 async function saveBooking(ds, slot, info) {
-  await setDoc(doc(db,'bookings',ds+'_'+slot), {date:ds, slot, ...info});
+  await db.collection('bookings').doc(ds+'_'+slot).set({date:ds, slot, ...info});
 }
 async function findBooking(cls, pw) {
   try {
-    const snap = await getDocs(collection(db,'bookings'));
+    const snap = await db.collection('bookings').get();
     let found = null;
     snap.forEach(d => {
       const data = d.data();
@@ -515,7 +515,7 @@ document.getElementById('btn-lookup').addEventListener('click', async () => {
   cancelBtn.addEventListener('click', async () => {
     if(!confirm(dateStr+' '+TIME_LABELS[found.slot]+' 상담 신청을 취소할까요?')) return;
     try {
-      await deleteDoc(doc(db,'bookings',found.id));
+      await db.collection('bookings').doc(found.id).delete();
       res.innerHTML = '<div class="success-note">✅ 신청이 취소되었어요.</div>';
       document.getElementById('lookup-cls').value='';
       document.getElementById('lookup-pw').value='';
